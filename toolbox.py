@@ -2,13 +2,19 @@ import binascii
 import operator
 import math
 
-def str_to_bin(a, b):
+def str_to_bin(a):
+    """Pas fini"""
     a = a.encode(encoding='utf-8', errors="strict")
-    b = b.encode(encoding='utf-8', errors="strict")
-
     a = bin(int(a.hex()))[2:]
-    b = bin(int(b.hex()))[2:]
-    return a,b
+    return a
+
+def left_shift(a):
+    """
+    :param a: binary in a string
+    :return: binary in a string
+    """
+    x,a = a[0], a[1:]
+    return a + x
 
 def xor(a, b):
     """
@@ -33,3 +39,4 @@ def addition_mod_216(a, b):
 def multiplication_mod_216(a, b):
     return int(math.fmod(a*b, 65536))
 
+print(left_shift("101"))

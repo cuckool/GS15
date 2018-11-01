@@ -13,6 +13,8 @@ def main():
 
     :return:
     """
+
+    print("""HASHAGE : SHA3""")
     hash_length, size_c, size_block, size_r, n_ite = initialisation()
     doc = tb.load_input()
     docbin = str(tb.str_to_bin(doc))

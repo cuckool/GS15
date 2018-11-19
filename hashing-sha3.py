@@ -15,30 +15,31 @@ def main():
     """
 
     print("""HASHAGE : SHA3""")
-    hash_length, size_c, size_block, size_r, n_ite = initialisation()
+    hash_length, size_c, size_block, size_r = initialisation()
     doc = tb.load_input()
     docbin = str(tb.str_to_bin(doc))
     doc_w_padding = str(tb.padding(size_r, docbin))
+    n_ite = int(len(doc_w_padding)/size_r)
+    print("Il y aura " + str(n_ite) + " itérations.")
     hash_hex, hash_bin = hashage(doc_w_padding, n_ite, size_c, size_r, hash_length)
     print(hash_hex)
 
 
 def initialisation():
     """
-
-    :return:
+    :return: hash_length, size_c, size_block, size_r
     """
-    # Initialisation des variables en fonction de l'énoncé et du choix utilisateur.
+    """
+    Initialisation des variables en fonction de l'énoncé et du choix utilisateur.
     # hashLength = selectHashLenght()
-
     # TEMP
+    """
     hash_length = 384
 
     size_c = 2 * hash_length
     size_block = 1600
-    n_ite = 24
     size_r = size_block - size_c
-    return hash_length, size_c, size_block, size_r, n_ite
+    return hash_length, size_c, size_block, size_r
 
 
 def select_hash_lenght():
@@ -65,7 +66,6 @@ def select_hash_lenght():
 
 def hashage(doc_w_padding, n_ite, size_c, size_r, hash_length):
     """
-
     :param hash_length:
     :param doc_w_padding:
     :param n_ite:
@@ -89,16 +89,22 @@ def hashage(doc_w_padding, n_ite, size_c, size_r, hash_length):
     PHASE D'ABSOPTION
     le nombre d’itération est fixé à n = 24 ;
     c = 2p.
-    les sous bloc ri et ci sont  constitués des premiers et des derniers bits du bloc Bi.
+    les sous bloc ri et ci sont constitués des premiers et des derniers bits du bloc Bi.
     """
     for n in range(0, n_ite):
+        #print("itération n°" + str(n + 1))
         r = string_hashing[:size_r]
-        string_p = doc_w_padding[n * size_r:-(n + 1) * size_r]
+        #print("r = " + str(r))
+        string_p = doc_w_padding[n * size_r:(n + 1) * size_r]
+        "" \
+        #print("string p = " + str(string_p))
         r_xor = tb.xor_bin(r, string_p)
-        string_hashing = r_xor + string_hashing[-size_c:]
+        string_hashing = r_xor + string_hashing[:size_c]
+        print("string_hashing = " + str(len(string_hashing)))
         block_hashing = string_to_array(string_hashing)
-
-        block_hashing, string_hashing = hashing_function(block_hashing)
+        print("block_hashing taille = " + str(len(array_to_string(block_hashing))))
+        for m in range(0, 23):
+            block_hashing, string_hashing, L = hashing_function(block_hashing, L)
         """
         6. les sous bloc ri et ci sont respectivement constitués des premiers et des derniers bits du bloc Bi.
         """
@@ -109,7 +115,7 @@ def hashage(doc_w_padding, n_ite, size_c, size_r, hash_length):
     m = hash_length / size_r
 
     r = string_hashing[:size_r]
-    block_hashing_init, string_hashing = hashing_function(block_hashing)
+    block_hashing_init, string_hashing, L = hashing_function(block_hashing, L)
 
     hash_bin = str(string_hashing[:hash_length])
     print(hash_bin)
@@ -123,7 +129,7 @@ def hashage(doc_w_padding, n_ite, size_c, size_r, hash_length):
     return hash_hex, hash_bin
 
 
-def hashing_function(block_hashing_init):
+def hashing_function(block_hashing_init, L):
     """
 
     :param block_hashing_init:
@@ -131,13 +137,14 @@ def hashing_function(block_hashing_init):
     """
     global k
     block_hashing_etape1 = block_hashing_init
+    print("à l'étape 0 : " + str(array_to_string(block_hashing_etape1)))
 
     """
     1. on remplace chaque bit de chaque sous-blocs de 64 bits par un XOR avec le bit de parité d’une colone
     adjacente : B[:; j; k]   B[:; j; k]  parite(B[:; j; k 􀀀 1]) ;
     """
     for j in range(0, 5):
-        for k in range(0, 64):
+        for k in range(1, 64):
             block_slice = str(tb.xor_bin(''.join(block_hashing_init[:, j, k]),
                                          tb.parity_bit(''.join(block_hashing_init[:, j, k - 1]))))
             block_hashing_etape1[:, j, k] = list(str(block_slice))
@@ -145,9 +152,13 @@ def hashing_function(block_hashing_init):
         block_slice = tb.xor_bin(''.join(block_hashing_init[:, j, 0]),
                                  tb.parity_bit(''.join(block_hashing_init[:, j, 63])))
         block_hashing_etape1[:, j, 0] = list(block_slice)
+
+    print("à l'étape 1 : " + str(array_to_string(block_hashing_etape1)))
+
     """
     2. on permute les blocs de 64 bits de t bits avec t qui dépend de la position dans le tableaux (vous pourrez
     définir t en fonction des indices (i; j) comme vous le souahitez ; B[i; j; :]   B[i; j; :] << t(i; j) ;
+    """
     """
     f_i = 3
     f_j = 2
@@ -157,11 +168,13 @@ def hashing_function(block_hashing_init):
             block_hashing_etape2[i, j, :] = block_hashing_etape1[tb.addition_mod(f_i, i, 5),
                                             tb.addition_mod(j, f_j, 5),
                                             :]
-
+    print("à l'étape 2 : " + str(array_to_string(block_hashing_etape2)))
+"""
     """
     3. on permute les sous-blocs de 64 bits du tableau : B[i; j; :]   B[j; 2i+3j; :] (attention à la permutation
     des lignes et des colones) avec ici, bien sûr, 2i + 3jmod5 ;
     """
+    block_hashing_etape2 = block_hashing_etape1
     block_hashing_etape3 = block_hashing_etape2
     for i in range(0, 5):
         for j in range(0, 5):
@@ -184,13 +197,13 @@ def hashing_function(block_hashing_init):
     correspondant à la sortie (un bit) d’un LFSR de 8 bits.
     """
     block_hashing_etape5 = block_hashing_etape4
-    # for j in range (0, 4):
-    #    block_slice = tb.xor_bin(block_hashing_etape4[j,j,2^m_LFSR(L)])
+    for m in range (0, 6):
+        for j in range (1, 5):
+            block_hashing_etape5[j, j,:] = tb.xor_bin(block_hashing_etape4[j,j,(2^m-1)%64], block_hashing_etape4[j,j,m+7*L.next()])
 
-    block_hashing_init = block_hashing_etape5
+    block_hashing_fin = block_hashing_etape5
     string_hashing = array_to_string(block_hashing_etape5)
-    print(string_hashing)
-    return block_hashing_init, string_hashing
+    return block_hashing_fin, string_hashing, L
 
 
 def array_to_string(block_hashing):
@@ -199,12 +212,13 @@ def array_to_string(block_hashing):
     :param block_hashing:
     :return:
     """
-    string_hashing = ''.join(block_hashing[0, 0, :])
-    for i in range(1, 5):
-        for j in range(1, 5):
+    string_hashing = '0'
+    for i in range(0, 5):
+        for j in range(0, 5):
             string_hashing = string_hashing + ''.join(block_hashing[i, j, :])
 
-    # print(len(string_hashing))
+    string_hashing = string_hashing[1:]
+    print(len(string_hashing))
     return string_hashing
 
 

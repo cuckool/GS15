@@ -7,7 +7,7 @@ def str_to_bin(doc):
     return docbin
 
 def load_input() :
-    doc = open("Bible.txt", "r", encoding="ISO-8859-1").read()
+    doc = open("Laam - Copie.txt", "r", encoding="ISO-8859-1").read()
     return doc
 
 def left_shift(a):

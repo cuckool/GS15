@@ -1,5 +1,6 @@
 import miller_rabin_test as mrt
 from Crypto.Util import number
+from random import randint
 
 def main():
     print("""PARTAGE DE CLEF : DIFFIE HELLMAN""")
@@ -23,12 +24,12 @@ def prime_number_choice():
             p_length = 1024
             q = number.getPrime(q_length)
             j = number.getRandomInteger(p_length-q_length)
-            while (j % 2 != 0):
-                j = number.getRandomInteger(p_length - q_length)
+            if (j % 2 != 0):
+                j = j + 1
             while not (mrt.is_Prime(j*q + 1)):
                 j = number.getRandomInteger(p_length - q_length)
-                while (j % 2 != 0):
-                    j = number.getRandomInteger(p_length - q_length)
+                if (j % 2 != 0):
+                    j = j +1
             p = j * q + 1
             print("Le nombre généré est " + str(p))
             break
@@ -49,34 +50,35 @@ def prime_number_choice():
 
 """2. Alice cherche un générateur alpha du corps Zp ;"""
 def pair_generator(p, j):
-    h = number.getRandomInteger(1023)
+    g_size = randint(1, 1023)
+    h = number.getRandomInteger(g_size)
     while ((h^j)%p == 1):
-        h = number.getRandomInteger(1023)
+        h = number.getRandomInteger(g_size)
     g = (h^j)%p
-    print("Le générateur est " + str(g))
+    print("Le générateur est " + str(g) + "\n")
     return g
 
 """3. Alice choisit un entier a 2 Zp et calcule A = a ; ce résultat A est envoyé à Bob"""
 def alice_key_generator(g, p):
-    print("C'est au tour d'Alice.\n\n")
-    a_size = 255
+    print("\nC'est au tour d'Alice.\n\n")
+    a_size = randint(2,255)
     a = number.getRandomInteger(a_size)
-    alice_key = (g^b)%p
-    print("Sa clef secrète est : " + str(alice_key))
+    alice_key = (g^a)%p
+    print("Sa clef secrète est : " + str(alice_key) + "\n")
     return  alice_key, a
 
 """4. Bob choisit un entier b 2 Zp et calcule B = B ; ce résultat B est envoyé à Alice"""
 def bob_key_generator(g, p):
-    print("C'est au tour de Bob.\n\n")
-    b_size = 255
+    print("\nC'est au tour de Bob.\n\n")
+    b_size = randint(2,255)
     b = number.getRandomInteger(b_size)
     bob_key = (g^b)%p
-    print("Sa clef secrète est : " + str(bob_key))
+    print("Sa clef secrète est : " + str(bob_key) + "\n")
     return  bob_key, b
 
 def shared_key_generator(bob_key, a, p):
     shared_key = (bob_key^a)%p
-    print("La clef partagée entre Alice et Bob telle que définie par l'algorithme de Diffie Hellman est : \n" + str(shared_key))
+    print("\nLa clef partagée entre Alice et Bob telle que définie par l'algorithme de Diffie Hellman est : \n" + str(shared_key))
     return shared_key
 
 if __name__ == "__main__":

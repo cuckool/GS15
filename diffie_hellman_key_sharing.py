@@ -7,10 +7,10 @@ def main():
     print("""PARTAGE DE CLEF : DIFFIE HELLMAN""")
     # p, j = prime_number_choice()
     # g = pair_generator(p, j)
-    p = prime_number_choice()
+    p, key_length = prime_number_choice()
     g = pair_generator(p)
-    alice_key, a = alice_key_generator(g, p)
-    bob_key, b = bob_key_generator(g, p)
+    alice_key, a = alice_key_generator(g, p, key_length)
+    bob_key, b = bob_key_generator(g, p, key_length)
     shared_key = shared_key_generator(bob_key, a , p)
 
 """1. Alice choisit un entier premier (grand), noté p ;"""
@@ -44,17 +44,18 @@ def prime_number_choice():
             while 1:
                 p = int(input("Choisissez un nombre entier. Entrez 0 pour revenir au menu précédent.\n"))
                 if p == 0:
-                    print("""->1<- Générer automatiquement un premier de 1024 bits.\n
+                    print("""->1<- Générer automatiquement un premier de 2048 bits.\n
 ->2<- Entrer manuellement un premier.""")
                     break
                 if mrt.is_Prime(p):
                     print("Le nombre " + str(p) + " est bien entier selon le test de Miller Rabin.")
+                    key_length = input("Quelle taille de clef voulez-vous générer ?")
                     break
                 else:
                     print("Le nombre " + str(p) + " n'est pas entier selon le test de Miller Rabin.")
         else: print("Veuillez entrer une option correcte.")
     #return p, j
-    return p
+    return p, key_length
 
 """2. Alice cherche un générateur alpha du corps Zp ;"""
 def pair_generator(p) :#, j):
@@ -68,18 +69,18 @@ def pair_generator(p) :#, j):
     return g
 
 """3. Alice choisit un entier a 2 Zp et calcule A = a ; ce résultat A est envoyé à Bob"""
-def alice_key_generator(g, p):
+def alice_key_generator(g, p, key_length):
     print("\nC'est au tour d'Alice.\n")
-    a_size = randint(540, 540)
+    a_size = randint(key_length, key_length)
     a = number.getRandomInteger(a_size)
     alice_key = (g^a)%p
     print("Sa clef secrète est : " + str(alice_key) + "\n")
     return  alice_key, a
 
 """4. Bob choisit un entier b 2 Zp et calcule B = B ; ce résultat B est envoyé à Alice"""
-def bob_key_generator(g, p):
+def bob_key_generator(g, p, key_length):
     print("\nC'est au tour de Bob.\n")
-    b_size = randint(540, 540)
+    b_size = randint(key_length, key_length)
     b = number.getRandomInteger(b_size)
     bob_key = (g^b)%p
     print("Sa clef secrète est : " + str(bob_key) + "\n")

@@ -3,15 +3,15 @@ from chiffrement.file_management import read_files_v2, write_file
 from chiffrement.idea import idea_encryption, idea_decryption
 
 
-def encrypt_file(file_name, new_file_name, mode_of_operation, enc_key):
+def encrypt_file(file_name, new_file_name, mode_of_operation, enc_key, key_length):
     blocks = read_files_v2(file_name)
-    blocks = mode_of_operation(blocks, enc_key, idea_encryption)
+    blocks = mode_of_operation(blocks, enc_key, idea_encryption, key_length)
     write_file(new_file_name, blocks)
 
 
-def decrypt_file(file_name, new_file_name, mode_of_operation, dec_key):
+def decrypt_file(file_name, new_file_name, mode_of_operation, dec_key, key_length):
     blocks = read_files_v2(file_name)
-    blocks = mode_of_operation(blocks, dec_key, idea_decryption)
+    blocks = mode_of_operation(blocks, dec_key, idea_decryption, key_length)
     write_file(new_file_name, blocks)
 
 

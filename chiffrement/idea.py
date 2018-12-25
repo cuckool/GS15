@@ -139,10 +139,11 @@ def permutation_circulaire(a: str):
 
 
 if __name__ == '__main__':
-    clef = random.randrange(2 ** 128)
+    key_l = 256
+    clef = random.randrange(2 ** key_l)
     bloc = random.randrange(2 ** 64)
-    cypher_bloc = idea(True, clef, bloc, key_length=128)
-    clear_bloc = idea(False, clef, cypher_bloc, key_length=128)
+    cypher_bloc = idea(True, clef, bloc, key_length=key_l)
+    clear_bloc = idea(False, clef, cypher_bloc, key_length=key_l)
     print(bloc)
     print(clear_bloc)
 

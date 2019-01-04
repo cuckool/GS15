@@ -1,5 +1,5 @@
 import random
-
+import hashlib
 
 def ecb_encryption(plain_text, enc_key, encryption_function, key_length):
     """
@@ -49,7 +49,7 @@ def pcbc_encryption(plain_text, enc_key, encryption_function, key_length):
     Une entrée de la liste plain_text >> un bloc de 64 bits
     """
     cypher_txt = []
-    initialisation_vector = enc_key #Comment déduire l'IV de la clé sans pouvoir la retrouver depuis lui ?? Hash de 64 bits ??
+    initialisation_vector = int(str(enc_key)[0:19]) #Comment déduire l'IV de la clé sans pouvoir la retrouver depuis lui ?? Hash de 64 bits ??
     for index, block in enumerate(plain_text):
         temp = initialisation_vector ^ block
         cypher_bloc = encryption_function(enc_key, temp, key_length)
@@ -63,7 +63,7 @@ def pcbc_decryption(cypher_txt, dec_key, decryption_function, key_length):
         Une entrée de la liste plain_text >> un bloc de 64 bits
     """
     plain_text = []
-    initialisation_vector = dec_key
+    initialisation_vector = int(str(dec_key)[0:19])
     for ind, block in enumerate(cypher_txt):
         temp = decryption_function(dec_key, block, key_length)
         plain_block = initialisation_vector ^ temp

@@ -3,11 +3,10 @@ import random
 import encryption_modes
 
 
-
 key_length_test = 128
 
-class TestEncryptionModes(unittest.TestCase):
 
+class TestEncryptionModes(unittest.TestCase):
     def test_ecb(self):
         for a in range(1000):
             plain = [random.randrange(0, 2**key_length_test-1) for i in range(10)]

@@ -1,6 +1,8 @@
-# from chiffrement.encryption_modes import *
+
+
 from chiffrement.file_management import read_files_v2, write_file
 from chiffrement.idea import idea_encryption, idea_decryption
+
 
 
 def encrypt_file(file_name, new_file_name, mode_of_operation, enc_key, key_length):
@@ -19,10 +21,10 @@ def decrypt_file(file_name, new_file_name, mode_of_operation, dec_key, key_lengt
 #     clef = random.randrange(0, 2**64-1)
 #     encrypt_file(r'D:\Users\Crowbar\PycharmProjects\GS15\w a t.jpg',
 #                  r'D:\Users\Crowbar\PycharmProjects\GS15\w a t_chiffré.txt',
-#                  encryption_modes.cbc_encryption, enc_key=clef)
+#                  cfb_encryption, enc_key=clef, key_length=64)
 #     decrypt_file(r'D:\Users\Crowbar\PycharmProjects\GS15\w a t_chiffré.txt',
 #                  r'D:\Users\Crowbar\PycharmProjects\GS15\w a t déchiffré.jpg',
-#                  encryption_modes.cbc_decryption, dec_key=clef)
+#                  cfb_decryption, dec_key=clef, key_length=64)
 
 
 

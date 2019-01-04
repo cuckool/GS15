@@ -77,6 +77,9 @@ def cfb_encryption(plain_text, enc_key, encryption_function, key_length):
     Retourne une list avec un nb de plus en [0], le bloc qui ne pourra pas être décodé sans l'IV
     Une entrée de la liste plain_text >> un bloc de 64 bits
     """
+
+    raise Exception("Cette fonction n'est pas opérationnelle pour l'écriture sur fichier.")
+
     cypher_txt = []
     plain_text_cp = plain_text[:]
     plain_text_cp.insert(0, random.randrange(0, 2**64-1))
@@ -90,6 +93,9 @@ def cfb_encryption(plain_text, enc_key, encryption_function, key_length):
 
 
 def cfb_decryption(cypher_txt, dec_key, encryption_function, key_length):
+
+    raise Exception("Cette fonction n'est pas opérationnelle pour l'écriture sur fichier.")
+
     plain_text = []
     for ind, i in enumerate(cypher_txt[1:]):
         temp = encryption_function(dec_key, cypher_txt[ind], key_length) #ça devrait être ind-1 mais, enumerate est sur cypher_txt[1:], donc le index de cet enumerate est le ind-1 de enumerate(cypher)
@@ -98,7 +104,7 @@ def cfb_decryption(cypher_txt, dec_key, encryption_function, key_length):
     return plain_text
 
 
-def test_function(key, plaintext):
+def test_function(key, plaintext, key_length):
     """
     Doit respecter la forme:
      entrée : int sur 64 bits (max 2**64-1) + key de 64 bits

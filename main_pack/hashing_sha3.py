@@ -2,7 +2,7 @@ import numpy as np
 import sys
 import main_pack.toolbox as tb
 import math
-from LFSR import lfsr as lfsr
+from Lib.LFSR import lfsr as lfsr
 
 ""
 "Cette fonction prend en entrée un fichier codé en binaire et renvoie en sortie le hash du fichier"

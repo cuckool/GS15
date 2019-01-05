@@ -1,6 +1,5 @@
 from chiffrement import main, encryption_modes
 from certificat import rsa
-import sympy
 import os
 
 

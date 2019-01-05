@@ -40,7 +40,7 @@ def hash_document(doc_bin):
     hash_hex, hash_bin = hashage(doc_w_padding, n_ite, size_c, size_r, hash_length)
     print("Le hash SHA3 du fichier est : ")
     print(hash_hex)
-    return hash_hex
+    return hash_hex, hash_bin
 
 
 def initialisation():

@@ -26,8 +26,15 @@ def write_file(file_name, data):
         f.write(bin_data)
 
 
+def read_in_bin(filename):
+    bin_str = ""
+    with open(filename, mode='rb') as f:
+        data = f.read()
+    for a in data:
+        bin_str += format(a, 'b')
+    return bin_str
 
 
 if __name__ == '__main__':
-    blocks = read_files_v2('test.dat')
-    write_file('reecrit.dat', blocks)
+    data = read_in_bin(r'D:\Users\Crowbar\PycharmProjects\GS15\test.txt')
+    print(data)

@@ -124,15 +124,15 @@ def hashage(doc_w_padding, n_ite, size_c, size_r, hash_length):
     PHASE DE RECUPERATION
     """
     m = int(math.ceil(hash_length / size_r))
-    print("hash lenght = " + str(hash_length) + " et size_r = " + str(size_r))
-    print("m = " + str(m))
+    # print("hash lenght = " + str(hash_length) + " et size_r = " + str(size_r))
+    # print("m = " + str(m))
     r = string_hashing[size_r:]
     block_hashing, string_hashing, L = hashing_function(block_hashing, L)
     # hash_bin = str(string_hashing[:hash_length])
     # print(hash_bin)
     r_hash = string_hashing[:hash_length]
     block_hashing, string_hashing, L = hashing_function(block_hashing, L)
-    print(r_hash)
+    # print(r_hash)
     hash = r_hash
     """
     for x in range(1, m):
@@ -143,7 +143,7 @@ def hashage(doc_w_padding, n_ite, size_c, size_r, hash_length):
     # print(len(hash))
     """
     hash_hex = hex(int(hash, 2))
-    print(len(hash))
+    # print(len(hash))
     return hash_hex, hash
 
 

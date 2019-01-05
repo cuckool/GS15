@@ -93,6 +93,37 @@ def ask_user_dechiffrement():
 
     # choix des fichiers
     while True:
+        fichier_orig = input("Veuillez rentrer le chemin vers le fichier à déchiffrer.\n")
+        if os.path.isfile(fichier_orig):
+            break
+        else:
+            print("Le chemin vers le fichier à déchiffrer est incorrect.")
+    while True:
+        fichier_chif = input("Veuillez rentrer le chemin vers le fichier de sortie (une fois qu'il sera déchiffré).\n")
+        if os.path.isdir(os.path.dirname(fichier_chif)):
+            break
+        else:
+            print("Le chemin vers le dossier de résultat est incorrect.")
+    return fichier_orig, fichier_chif, decipher_mode
+
+
+def ask_user_chiffrement_sans_clef():
+    # choix mode déchiffrement
+    while True:
+        choix = int(input("Veuillez choisir un mode de chiffrement :\n"
+                          "1. ECB \n" + "2. CBC\n" + "3. PCBC\n"))
+        if choix == 1:
+            decipher_mode = encryption_modes.ecb_encryption
+            break
+        elif choix == 2:
+            decipher_mode = encryption_modes.cbc_encryption
+            break
+        elif choix == 3:
+            decipher_mode = encryption_modes.pcbc_encryption
+            break
+
+    # choix des fichiers
+    while True:
         fichier_orig = input("Veuillez rentrer le chemin vers le fichier a déchiffrer.\n")
         if os.path.isfile(fichier_orig):
             break
@@ -106,7 +137,9 @@ def ask_user_dechiffrement():
             print("Le chemin vers le dossier de résultat est incorrect.")
     return fichier_orig, fichier_chif, decipher_mode
 
+
 if __name__ == '__main__':
+    pass
     # clef = random.randrange(0, 2**64-1)
     # encrypt_file(r'D:\Users\Crowbar\PycharmProjects\GS15\w a t.jpg',
     #              r'D:\Users\Crowbar\PycharmProjects\GS15\w a t_chiffré.txt',
@@ -114,9 +147,4 @@ if __name__ == '__main__':
     # decrypt_file(r'D:\Users\Crowbar\PycharmProjects\GS15\w a t_chiffré.txt',
     #              r'D:\Users\Crowbar\PycharmProjects\GS15\w a t déchiffré.jpg',
     #              cfb_decryption, dec_key=clef, key_length=64)
-    print(ask_users_var())
-
-
-
-
-
+    # print(ask_users_var())

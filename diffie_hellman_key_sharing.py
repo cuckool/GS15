@@ -13,7 +13,7 @@ def main():
     bob_key, b = bob_key_generator(g, p, key_length)
     shared_key = shared_key_generator(bob_key, a , p)
 
-def generer_clef_secrète():
+def generer_clef_secrete():
     print("""PARTAGE DE CLEF : DIFFIE HELLMAN""")
     # p, j = prime_number_choice()
     # g = pair_generator(p, j)

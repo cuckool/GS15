@@ -17,12 +17,14 @@ def generer_clef_secrete():
     print("""PARTAGE DE CLEF : DIFFIE HELLMAN""")
     # p, j = prime_number_choice()
     # g = pair_generator(p, j)
+
+    #DANS LA CLEF A = a, alpha = g et p = p
     p, key_length = prime_number_choice()
     g = pair_generator(p)
     alice_key, a = alice_key_generator(g, p, key_length)
     bob_key, b = bob_key_generator(g, p, key_length)
     shared_key = shared_key_generator(bob_key, a, p)
-    return shared_key
+    return shared_key, a, g, p
 
 
 def prime_number_choice():

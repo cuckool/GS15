@@ -99,7 +99,7 @@ def ask_user_dechiffrement():
         else:
             print("Le chemin vers le fichier à chiffrer est incorrect.")
     while True:
-        fichier_chif = input("Veuillez rentrer le chemin vers le fichier de sortie.\n")
+        fichier_chif = input("Veuillez rentrer le chemin vers le fichier de sortie (une fois qu'il sera chiffré).\n")
         if os.path.isdir(os.path.dirname(fichier_chif)):
             break
         else:

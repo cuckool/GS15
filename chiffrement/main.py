@@ -124,7 +124,7 @@ def ask_user_chiffrement_sans_clef():
 
     # choix des fichiers
     while True:
-        fichier_orig = input("Veuillez rentrer le chemin vers le fichier a déchiffrer.\n")
+        fichier_orig = input("Veuillez rentrer le chemin vers le fichier à chiffrer.\n")
         if os.path.isfile(fichier_orig):
             break
         else:

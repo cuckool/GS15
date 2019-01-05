@@ -21,7 +21,6 @@ def main():
     docbin = str(tb.str_to_bin(doc))
     doc_w_padding = str(tb.padding(size_r, docbin))
     n_ite = int(len(doc_w_padding)/size_r)
-    #print("Il y aura " + str(n_ite) + " itérations.")
     hash_hex, hash_bin = hashage(doc_w_padding, n_ite, size_c, size_r, hash_length)
     print("Le hash SHA3 du fichier est : ")
     print(hash_hex)
@@ -172,7 +171,7 @@ def hashing_function(block_hashing_init, L):
                                  tb.parity_bit(''.join(block_hashing_init[:, j, 63])))
         block_hashing_etape1[:, j, 0] = list(block_slice)
 
-    #print("à l'étape 1 : " + str(array_to_string(block_hashing_etape1)))
+    # print("à l'étape 1 : " + str(array_to_string(block_hashing_etape1)))
 
     """
     2. on permute les blocs de 64 bits de t bits avec t qui dépend de la position dans le tableaux (vous pourrez
@@ -225,7 +224,7 @@ def hashing_function(block_hashing_init, L):
 
     block_hashing_fin = block_hashing_etape5
     string_hashing = array_to_string(block_hashing_etape5)
-    print(string_hashing)
+    # print(string_hashing)
     return block_hashing_fin, string_hashing, L
 
 

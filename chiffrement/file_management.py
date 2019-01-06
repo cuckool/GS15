@@ -13,20 +13,21 @@ def read_files_v2(file_name):
 
 def write_file(file_name, data):
     """
-
+    Ecrit le tableau d'entier donné en entrée en bytes dans le fichier spécifié par file_name.
     :param file_name:
     :param data: list of 64 bit unsigned integer
     :return:
     """
     bin_data = []
     for a in data:
-        bin_data.append(int(a).to_bytes(8, byteorder='big', signed=False))      #comment signaler que des bytes ont été rajouté aux blocs
+        bin_data.append(int(a).to_bytes(8, byteorder='big', signed=False))
     bin_data = b"".join(bin_data)
     with open(file_name, mode='wb') as f:
         f.write(bin_data)
 
 
 def read_in_bin(filename):
+    """Extrait le contenu binaire d'un fichier, et le retourne sous la forme d'une str de 0 et de 1."""
     bin_str = ""
     with open(filename, mode='rb') as f:
         data = f.read()

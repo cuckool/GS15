@@ -8,19 +8,22 @@ import os
 
 
 def encrypt_file(file_name, new_file_name, mode_of_operation, enc_key, key_length):
+    """Un wrapper permettant de chiffrer un fichier."""
     blocks = read_files_v2(file_name)
     blocks = mode_of_operation(blocks, enc_key, idea_encryption, key_length)
     write_file(new_file_name, blocks)
 
 
 def decrypt_file(file_name, new_file_name, mode_of_operation, dec_key, key_length):
+    """Un wrapper permettant de déchiffrer un fichier."""
     blocks = read_files_v2(file_name)
     blocks = mode_of_operation(blocks, dec_key, idea_decryption, key_length)
     write_file(new_file_name, blocks)
 
 
 def ask_users_var_chiffrement():
-    """Permet d'obtenir les variables de chiffrement auprès de l'utilisateur."""
+    """Permet de demander certaines variables à l'utilisateur tel que le nom du fichier, le mode de chiffrement,
+    la taille de la clef..."""
     cipher_mode = None
     key_length = None
     #choix mode chiffrement
@@ -77,6 +80,7 @@ def ask_users_var_chiffrement():
 
 
 def ask_user_dechiffrement():
+    """Permet de demander certaines variables à l'utilisateur tel que le nom du fichier, le mode de déchiffrement..."""
     # choix mode déchiffrement
     while True:
         choix = int(input("Veuillez choisir un mode de déchiffrement (le même mode que pour le chiffrement):\n"
@@ -108,6 +112,7 @@ def ask_user_dechiffrement():
 
 
 def ask_user_chiffrement_sans_clef():
+    """Permet de demander certaines variables à l'utilisateur, sans se préocuper de la clef."""
     # choix mode déchiffrement
     while True:
         choix = int(input("Veuillez choisir un mode de chiffrement :\n"

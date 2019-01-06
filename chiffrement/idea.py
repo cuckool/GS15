@@ -4,14 +4,24 @@ import sympy
 
 
 def idea_encryption(enc_key, bloc, key_length = 128):
+    """ Un wrapper pouvant être utilisé par les méthodes du fichier encryption_modes.py"""
     return idea(True, enc_key, bloc, key_length)
 
 
 def idea_decryption(enc_key, bloc, key_length = 128):
+    """ Un wrapper pouvant être utilisé par les méthodes du fichier encryption_modes.py"""
     return idea(False, enc_key, bloc, key_length)
 
 
 def idea(encryption, enc_key, bloc, key_length):
+    """
+    La fonction de chiffrement / déchiffrement d'IDEA.
+    :param encryption: Si TRUE : les sous clefs de chiffrement sont utilisé, sinon ce sont les clefs de déchiffrement.
+    :param enc_key: La clef de chiffrement.
+    :param bloc: Le bloc à chiffrer (int)
+    :param key_length: La longueur de la clef, en bit (pour la génération des sous clefs)
+    :return: le bloc chiffré / déchiffré (int)
+    """
     if encryption is True:
         subkeys = subkey_creation(key=enc_key, key_length=key_length)
     else:
@@ -44,6 +54,8 @@ def idea(encryption, enc_key, bloc, key_length):
 
 
 def get_dec_subkeys_V2(enc_key, key_length):
+    """Une fonction produisant les sous clef de déchiffrement à partir de la clef de chiffrement. Elle fait appel à
+    subkey_creation pour travailler à partir des sous clefs de chiffrement."""
     enc_subkeys = subkey_creation(key=enc_key, key_length=key_length)
     dec_subkeys = [None] * 52
     for i in range(6, 43, 6):
@@ -69,6 +81,7 @@ def get_dec_subkeys_V2(enc_key, key_length):
 
 
 def mod_inverse(a, m):
+    """Un wrapper autour de la fonction mod_inverse de sympy"""
     if a != 0:
         inv = sympy.mod_inverse(a,m)
     else:
@@ -79,6 +92,7 @@ def mod_inverse(a, m):
 
 
 def mod_opp(a, m):
+    """Une fonction permettant de récuperer et de vérifier la validité de l'opposé modulaire."""
     if a > m :
         raise Exception("Problème dans la valeur de a !")
     opp = m - a
@@ -88,6 +102,7 @@ def mod_opp(a, m):
 
 
 def mmult(a, b):
+    """La multiplication comme défini dans IDEA."""
     mod = 65537
     if a == 0:
         a = 65536
@@ -101,6 +116,7 @@ def mmult(a, b):
 
 
 def subkey_creation(key: int, key_length: int):
+    """Fonction permettant de créer les sous clefs grâce à la clef de chiffrement (un int positif)."""
     if key < 0:
         raise Exception("Key is a negative number, must be positive.")
     key = format(key, 'b')
@@ -118,12 +134,14 @@ def subkey_creation(key: int, key_length: int):
 
 
 def get_sub_blocs(bloc):
+    """Divise le bloc (int) en 4 sous blocs (int)."""
     s_blocs = int(bloc).to_bytes(8, byteorder='big', signed=False)
     s_blocs = [int.from_bytes(s_blocs[i:i + 2], byteorder='big', signed=False) for i in range(0, 8, 2)]
     return s_blocs
 
 
 def get_whole_bloc(s_blocs):
+    """Reconstruit les 4 sous blocs de la fin d'IDEA en un bloc"""
     bloc_fin = ""
     for a in s_blocs:
         bin = format(a, 'b')
@@ -133,17 +151,19 @@ def get_whole_bloc(s_blocs):
 
 
 def permutation_circulaire(a: str):
+    """Un fonction permettant d'effectuer une permutation circulaire."""
     a = deque(a)
     a.rotate(-25)
     return "".join(a)
 
 
 if __name__ == '__main__':
-    key_l = 256
-    clef = random.randrange(2 ** key_l)
-    bloc = random.randrange(2 ** 64)
-    cypher_bloc = idea(True, clef, bloc, key_length=key_l)
-    clear_bloc = idea(False, clef, cypher_bloc, key_length=key_l)
-    print(bloc)
-    print(clear_bloc)
+    pass
+    # key_l = 256
+    # clef = random.randrange(2 ** key_l)
+    # bloc = random.randrange(2 ** 64)
+    # cypher_bloc = idea(True, clef, bloc, key_length=key_l)
+    # clear_bloc = idea(False, clef, cypher_bloc, key_length=key_l)
+    # print(bloc)
+    # print(clear_bloc)
 

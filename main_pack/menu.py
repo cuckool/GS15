@@ -7,6 +7,7 @@ from main_pack import hashing_sha3, diffie_hellman_key_sharing
 
 
 def generation_clef_pri_pu(clef_de_chiffrement_publique, clef_de_chiffrement_privee):
+    """ Permet de générer les clefs publique et privée pour la signature."""
     if clef_de_chiffrement_privee != None and clef_de_chiffrement_publique != None:
         choix_changement = int(input("Il y a déjà des clefs de chiffrement publique/priveé. "
                                      "Voulez-vous en changer ?\n "
@@ -25,6 +26,7 @@ def generation_clef_pri_pu(clef_de_chiffrement_publique, clef_de_chiffrement_pri
 
 
 def chiffrement_fichier(clef_chiffrement_idea, clef_chiffrement_idea_long):
+    """La fonction permettant de chiffer un fichier en prenant en compte les choix de l'utilisateur."""
     if clef_chiffrement_idea is None:
         fichier_orig, fichier_chif, cipher_mode, clef_chiffrement_idea, clef_chiffrement_idea_long = main.ask_users_var_chiffrement()
     else:
@@ -45,6 +47,7 @@ def chiffrement_fichier(clef_chiffrement_idea, clef_chiffrement_idea_long):
 
 
 def dechiffrement_fichier(fichier_a_dechif, fichier_dechif, decipher_mode, option6=False):
+    """La fonction permettant de déchiffer un fichier en prenant en compte les choix de l'utilisateur."""
     if not option6:
         fichier_a_dechif, fichier_dechif, decipher_mode = main.ask_user_dechiffrement()
     main.decrypt_file(fichier_a_dechif, fichier_dechif, decipher_mode, dec_key=clef_chiffrement_idea,
@@ -65,6 +68,7 @@ def dechiffrement_fichier(fichier_a_dechif, fichier_dechif, decipher_mode, optio
 
 
 if __name__ == '__main__':
+    """ La fonction principale du programme, présentant un menu à l'utilisateur."""
     clef_chiffrement_idea = None
     clef_chiffrement_idea_long = None           # longueur de la clef IDEA
     clef_de_chiffrement_publique = None
